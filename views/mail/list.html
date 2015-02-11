@@ -1,0 +1,57 @@
+<%- include side.html %>
+<% var box=box||"" %>
+<div class="main-body grid-80 push-5" id="J_content">
+  Loading emails...
+</div>
+
+<script id="inbox_tpl" type="tpl/cache">
+  <%if(tag=='inbox'){%>
+  {{#messages}}
+    <p>Total <strong>{{total}}</strong> Unread <%if(!box){%>，其中 <a href="/mail/unseen">Unread Messages</a> <strong>{{new}}</strong> Seal<%}%> <!--<a href="javascript:;">Ready to read</a>--></p>
+  {{/messages}}
+  <%}%>
+  <table class="table">
+    <thead>
+      <tr class="mail-list-header">
+        <th>Sender</th>
+        <th>Subject</th>
+        <th style="min-width:140px;">Time</th>
+      </tr>
+    </thead>
+    {{#each msgs}}
+
+      <tr class="{{isSeenClass msg.flags}}">
+      {{#mail}}
+        {{#headers}}
+          <td>{{from}} </td>
+          <td><a href="/mail/inbox/{{../../msg/uid}}">{{#each subject}}{{.}}{{/each}}</a></td>
+          <td>{{dateFormat date}}</td>
+        {{/headers}}
+      </tr>
+      {{/mail}}
+    {{/each}}
+    {{^msgs}}
+      <tr>
+        <td colspan="3">
+          <div class="well">No Data</div>
+        </td>
+      </tr>
+    {{/msgs}}
+  </table>
+  <%if(tag=='inbox'){%>
+  <ul class="pager">
+    <li class="previous">
+      <a href="/mail/inbox/page/<%=parseInt(page)+1%>">&larr; <%=parseInt(page)+1%> weeks ago</a>
+    </li>
+    <%if(page!=1){%>
+    <li class="next">
+      <a href="/mail/inbox/page/<%=parseInt(page)-1%>"><%=parseInt(page)-1%> weeks ago &rarr;</a>
+    </li>
+    <%}%>
+  </ul>
+  <%}%>
+</script>
+<script src="/libs/moment/moment.js"></script>
+<script src="/libs/moment/lang/zh-cn.js"></script>
+<script>TAG='<%=tag||"inbox"%>';BOX='<%=box%>';</script>
+<script src="/javascripts/inbox.js"></script>

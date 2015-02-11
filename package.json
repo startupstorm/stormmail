@@ -1,0 +1,50 @@
+{
+  "name": "nodemail",
+  "version": "0.1.9",
+  "description": "A simple web-mail base on nodejs.",
+  "author": "nomospace",
+  "main": "index.html",
+  "window": {
+    "toolbar": false,
+    "width": 900,
+    "height": 600,
+    "position": "center",
+    "min_width": 900,
+    "min_height": 600,
+    "as_desktop": true
+  },
+  "webkit": {
+    "webgl-disabled": true
+  },
+  "dependencies": {
+    "ejs": "~0.8.2",
+    "ejs-locals": "~0.2.5",
+    "express": "~3.0.0rc5",
+    "express-partials": "~0.0.6",
+    "imap": "~0.5.2",
+    "lru-cache": "~2.0.4",
+    "mailparser": "~0.2.28",
+    "markdown-js": "~0.0.3",
+    "moment": "~1.7.0",
+    "nodemailer": "~0.3.27",
+    "validator": "~0.4.11",
+    "mongoose": "~3.2.0",
+    "toobusy": "~0.2.3",
+    "express-validator": "~3.26.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node test/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nomospace/nodemail.git"
+  },
+  "keywords": [
+    "node",
+    "mail",
+    "express",
+    "imap"
+  ],
+  "license": "BSD"
+}

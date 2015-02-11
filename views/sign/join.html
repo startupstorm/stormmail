@@ -1,0 +1,136 @@
+<div id='content' style="background-color:#EBEDEE;" class="grid-50 push-25">
+	<div class='panel' style="background-color:#3FCCEA;">
+		<div class='header' style="background-color:#3FCCEA;">
+			<ul class='breadcrumb' style="background-color:#3FCCEA;">
+
+				<li class='active text-center'><h1 style="font-size:40px;font-family: Oxygen, sans-serif;color:white;padding-top:10px;">Create Your Account</h1></li>
+
+			</ul>
+		</div>
+		<div class='inner grid-50 push-25' style='padding-top:5%;'>
+      <% var error = error||'' %>
+			<% if(error){ %>
+			<div class="alert alert-error">	
+				<a class="close" data-dismiss="alert" href="#">&times;</a>
+				<strong><%= error %></strong>
+			</div>
+			<% } %>
+<!-- 			<form id='signin_form' class='form-horizontal' action='/login' method='post'>
+
+				<div class='input-group-sm ' style="">
+					<label class='' for='name' style="color:#F9F9F9;font-size:20px;">Email</label>
+					<input class='form-control' id='name' name='name' type='text' placeholder="email" describedby="basic-addon2">
+  					<span class="input-group-addon" id="basic-addon2">@startupstorm.org</span>
+				</div>
+				<br>
+				<div class='input-group-lg input-group' style="padding:5% 0 5%;">
+					<label class='' for='pass' style="color:#F9F9F9;font-size:20px;">Password</label>
+					<input class='form-control' id='pass' name='pass' size='30' type='password' placeholder="password"/>
+				</div>
+
+				<input type='hidden' name='_csrf' value='<%= csrf %>' />
+				<div class='form-actions' style="padding:20% 0 5%;">
+					<input type='submit' class='btn btn-lg btn-success grid-90' value='Login' />
+				</div>
+				<div class='text-center grid-90' style="padding:3% 0 10% 0; color:gray;">
+					<a href="/sign/reset">Reset your password</a>
+				</div>
+			</form> -->
+			<form id='signin_form' class='form-horizontal' action='/join' method='post'>
+				<fieldset>
+
+
+					<!-- Text input-->
+					<div class="form-group form-group-lg">
+					  <label class="text-left grid-100 " for="firstname">First Name</label>  
+					  <div class="grid-90">
+					  <input id="firstname" name="firstname" type="text" placeholder="placeholder" class="form-control input-md" required="">
+					  <span class="-block"></span>  
+					  </div>
+					</div>
+
+					<!-- Text input-->
+					<div class="form-group form-group-lg">
+					  <label class="text-left grid-100 " for="lastname">Last Name</label>  
+					  <div class="grid-90">
+					  <input id="lastname" name="lastname" type="text" placeholder="placeholder" class="form-control input-md" required="">
+					  <span class="-block"></span>  
+					  </div>
+					</div>
+
+					<!-- Appended Input-->
+					<div class="form-group form-group-lg">
+					  <label class="text-left grid-100 " for="username">Choose your username</label>
+					  <div class="grid-90">
+					    <div class="input-group">
+					      <input id="username" name="username" class="form-control" placeholder="placeholder" type="text" required="">
+					      <span class="input-group-addon">@startupstorm.org</span>
+					    </div>
+					    <p class="-block"></p>
+					  </div>
+					</div>
+					<!-- Password input-->
+					<div class="form-group form-group-lg">
+					  <label class="text-left grid-100 " for="pass">Create a Password</label>
+					  <div class="grid-90">
+					    <input id="pass" name="pass" type="password" placeholder="placeholder" class="form-control input-md" required="">
+					    <span class="-block"></span>
+					  </div>
+					</div>
+
+					<!-- Password input-->
+					<div class="form-group form-group-lg">
+					  <label class="text-left grid-100 " for="pass_confirm">Confirm Password</label>
+					  <div class="grid-90">
+					    <input id="pass_confirm" name="pass_confirm" type="password" placeholder="placeholder" class="form-control input-md" required="">
+					    <span class="-block"></span>
+					  </div>
+					</div>
+
+					<!-- Text input-->
+					<div class="form-group form-group-lg">
+					  <label class="text-left grid-100 " for="curr_email">Current Email </label>  
+					  <div class="grid-90">
+					  <input id="curr_email" name="curr_email" type="text" placeholder="placeholder" class="form-control input-md" required="">
+					  <span class="-block">this will be used for recovery only</span>  
+					  </div>
+					</div>
+
+					<!-- Text input-->
+					<div class="form-group form-group-lg">
+					  <label class="text-left grid-100 " for="phone">Mobile Phone</label>  
+					  <div class="grid-90">
+					  <input id="phone" name="phone" type="text" placeholder="placeholder" class="form-control input-md">
+					  <span class="-block"></span>  
+					  </div>
+					</div>
+
+					<!-- Multiple Checkboxes -->
+					<div class="form-group form-group-lg">
+					  <label class="text-left grid-100 " for="tos">I agree to StartupStorm's TOS</label>
+					  <div class="text-left grid-100">
+					  <div class="checkbox">
+					    <label for="tos-0">
+					      <input type="checkbox" name="tos" id="tos-0" value="yes">
+					      Yes
+					    </label>
+						</div>
+					  </div>
+					</div>
+
+					<!-- Button -->
+					<div class="form-group form-group-lg">
+					  <label class="text-left grid-100 " for="singlebutton"></label>
+					  <div class="text-left grid-100">
+					    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Next Step</button>
+					  </div>
+					</div>
+
+				</fieldset>
+			</form>
+
+		</div>
+	</div>	
+</div>
+<script src="/libs/jquery.validate/jquery.validate.js"></script>
+<script src="/javascripts/login.js"></script>

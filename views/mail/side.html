@@ -1,0 +1,28 @@
+<%tag=tag||''%>
+<div class="bs-docs-sidebar ">
+	<div class="btn-group mail-comp">
+	  <!--<button class="btn">收 信</button>-->
+    <a href="/mail/compose"><button class="btn btn-danger" style="width:100%;">Compose</button></a>
+	</div>
+  <ul class="nav nav-list bs-docs-sidenav">
+    <li <%if(tag=='inbox'){%>class="active"<%}%>><a href="/mail/inbox"><i class="icon-chevron-right"></i> Inbox</a></li>
+    <li <%if(tag=='flagged'){%>class="active"<%}%>><a href="/mail/flagged"><i class="icon-chevron-right"></i> Flagged</a></li>
+    <li <%if(tag=='draft'){%>class="active"<%}%>><a href="/mail/draft"><i class="icon-chevron-right"></i> Draft</a></li>
+    <li <%if(tag=='answered'){%>class="active"<%}%>><a href="/mail/answered"><i class="icon-chevron-right"></i> Replied</a></li>
+    <li <%if(tag=='deleted'){%>class="active"<%}%>><a href="/mail/deleted"><i class="icon-chevron-right"></i> Deleted</a></li>
+  </ul>
+  <%if(tag){%>
+  <div class="side-folders btn-group">
+    <button class="btn dropdown-toggle" data-toggle="dropdown">Folders<span class="caret"></span></button>
+    <ul id="J_side_list" class="dropdown-menu">
+      <li><a>Loading</a></li>
+    </ul>
+  </div>
+  <%}%>
+</div>
+<script id="side_item_tpl" type="tpl/cache">
+  {{#boxes}}
+  <li><a href="/mail/box/{{.}}">{{.}}</a></li>
+  {{/boxes}}
+</script>
+<script src="/libs/iframe-autoheight/jquery.iframe-auto-height.plugin.1.7.1.js" type="text/javascript"></script>

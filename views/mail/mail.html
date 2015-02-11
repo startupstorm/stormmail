@@ -1,0 +1,46 @@
+<%- include side.html %>
+
+<div class="main-body mail-page" id="J_content">
+  <div class="btn-groups clearfix" id="J_toolbar">
+    <div class="btn-group">
+      <a href="/mail/inbox"><button class="btn">返回</button></a>
+    </div>
+    <div class="btn-group">
+      <a href="/mail/inbox/<%=id%>/compose"><button class="btn">回复</button></a>
+    </div>
+    <!--<div class="btn-group">-->
+      <!--<button class="btn">转发 </button>-->
+    <!--</div>-->
+    <div class="btn-group">
+      <button class="btn" id="J_delete">Delete </button>
+    </div>
+    <div class="btn-group">
+      <button class="btn dropdown-toggle" data-toggle="dropdown">Mark As <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li><a href="#">Read</a></li>
+        <li><a href="#">Unread</a></li>
+        <li><a href="#">Deleted</a></li>
+        <li><a href="#">Deleted</a></li>
+      </ul>
+    </div>
+  </div>
+	<div class="mail-body">
+    <div><span class="label">Subject</span><%=data.mail.headers.subject%></span></div>
+	  <div><span class="label">From</span><%=data.mail.headers.from%></div>
+	  <div><span class="label">To</span><%=data.mail.headers.to%></div>
+    <%if(data.mail.headers.cc){%>
+	  <div><span class="label">CC</span><%=data.mail.headers.cc%></div>
+    <%}%>
+    <div><span class="label">Time</span><%=moment(data.mail.headers.date).format('LLLL')%></div>
+    <!-- todo 注册 common helper -->
+    <!-- todo 附件文本乱码问题 -->
+    <%if(data.mail.attachments&&data.mail.attachments.length){%>
+    <div><span class="label">Attachment(s)</span><%=data.mail.attachments.length%> Months <%(data.mail.attachments.forEach(function(i){%> (<%=i.generatedFileName%> <%=i.length/1024%>k<%}))%>)</div>
+    <%}%>
+	</div>	
+  <iframe src="/mail/inbox/<%=id%>/html" class="mail-body-iframe"></iframe>
+</div>
+
+<script src="/libs/sticky-panel/stickypanel.js"></script>
+<script>ID="<%=id%>"</script>
+<script src="/javascripts/mail.js"></script>

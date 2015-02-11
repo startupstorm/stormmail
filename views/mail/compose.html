@@ -1,0 +1,49 @@
+<%- include side.html %>
+
+<div class="main-body mail-page" id="J_content">
+	<div class="btn-groups clearfix" id="J_toolbar">
+		<div class="btn-group">
+      <button id="J_send" class="btn btn-primary">发送 </button>
+		</div>
+    <div class="btn-group">
+      <button id="J_saveas_draft" class="btn">存草稿 </button>
+    </div>
+    <!--<div class="btn-group">-->
+      <!--<button class="btn">预览 </button>-->
+    <!--</div>-->
+    <div class="btn-group">
+      <a href="/mail/inbox/<%=id%>"><button class="btn">取消</button></a>
+    </div>
+	</div>
+	<div id="J_compose_body" class="compose-body" data-reply="<%=!!data%>">
+		<%if(data){%>
+		  <div><span class="label">From</span><span id="J_from" class="uneditable-input"><%=data.mail.headers.to%></span></div>
+		  <div><span class="label">To</span><input id="J_to" type="text" class="span7" value="<%=data.mail.headers.from%>" data-value="<%=data.mail.from[0].address%>"></div>
+		  <div><span class="label">CC</span><input id="J_cc" type="text" class="span7" value="<%=data.mail.headers.cc||''%>" data-value="<%=JSON.stringify(data.mail.cc)%>"></div>
+		  <div><span class="label">Subject 题</span><input id="J_subject" type="text" class="span7" value="<%=data.mail.headers.subject%>"></div>
+	  <%}else{%>
+		  <div><span class="label">From</span><input id="J_from" type="text" class="span7"></div>
+		  <div><span class="label">To</span><input id="J_to" type="text" class="span7"></div>
+		  <div><span class="label">CC</span><input id="J_cc" type="text" class="span7"></div>
+		  <div><span class="label">Subject 题</span><input id="J_subject" type="text" class="span7"></div>
+	  <%}%>
+    <div class="attach"><p><i class="icon-upload"></i>Attachments</p><input type="file" id="J_attach_file"></div>
+	</div>
+	<textarea id="J_editor" style="display:none;">
+		<%if(data){%>
+		<br><br><br><br>
+		在<%=moment(data.mail.headers.date).format('LLLL')%> <%=data.mail.headers.to%>写到：
+		<blockquote><%=data.mail.html%></blockquote>
+	  <%}else{%>
+	  <%}%>
+	</textarea>
+</div>
+<script id="attach_item_tpl" type="tpl/cache">
+  <div class="thumbnail">
+    <i class="icon-file"></i>{{name}} {{size}}bytes <i class="icon-remove"></i>
+  </div>
+</script>
+<script type="text/javascript" src="/libs/tiny-mce/tiny_mce_dev.js"></script>
+<script type="text/javascript" src="/libs/sticky-panel/stickypanel.js"></script>
+<script>ID="<%=id%>"</script>
+<script type="text/javascript" src="/javascripts/mail.js"></script>

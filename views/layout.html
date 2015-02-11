@@ -1,0 +1,89 @@
+<!DOCTYPE html> 
+<html>
+  <head>
+    <!-- meta -->
+    <meta charset="utf-8" />
+    <meta name='description' content='<%= config.description %>'>
+    <%
+    var headers = config.site_headers || [];
+    for (var i = 0, l = headers.length; i < l; i++) { 
+    %>
+    <%- headers[i] %>
+    <% } %>
+    <!-- style -->
+    <link rel="stylesheet" type="text/css" href="/libs/bootstrap/css/bootstrap.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="/libs/bootstrap/css/docs.css" /> -->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+    <link rel="stylesheet" type="text/css" href="/stylesheets/main.css" />
+    <link rel="stylesheet" href="/css/icon.css">
+    <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/img/favicon.ico" type="image/x-icon">
+    <!-- script -->
+    <script src='/libs/jquery/jquery.js'></script>
+    <!--script src='/libs/backbone/underscore.js'></script>
+    <script src='/libs/backbone/backbone.js'></script-->
+    <script src='/libs/bootstrap/js/bootstrap.js'></script>
+    <script src='/libs/handlebars/handlebars.js'></script>
+    <% if (locals.topic) { %>
+    <title><%= topic.title %> - <%= config.name %></title>
+    <% } else { %>
+    <title><%= config.description %></title>
+    <% } %>
+  </head>
+  <body>
+    <!-- navbar -->
+    <header class="">
+
+        <div class="grid-container">
+<!--           <a href="#" id="logo" style="left:30px;position:absolute;"><img src='http://ntshstartupstorm.org/img/header_logo.png'></a> -->
+          <nav class="pull-left" style="padding-left:5%;">
+              <a href="#about">About</a>
+              <a href="#ventures">Ventures</a>
+
+          </nav>
+          <nav class="pull-right">
+                          <%
+              var site_navs = config.site_navs || [];
+              for (var i = 0, l = site_navs.length; i < l; i++) {
+                var nav = site_navs[i];
+              %>
+              <a href="<%- nav[0] %>" target="<%- nav[2] %>"><%- nav[1] %></a> 
+              <% } %>
+              <% locals %>
+              <% if (locals.currentUser) { %>
+              <a href='/mail'>Mail</a>
+              <a href='/stats'>Stats</a>
+              <a href='/todos'>Todos</a>
+              <a><%=locals.currentUser.name%></a>
+              <a href='/signout'>Logout</a>
+              <% } else { %>
+              <a href='/login'>Login</a>
+              <% } %>
+          </nav>
+        </div>
+
+    </header>
+<!--     <div class='navbar'>
+      <div class='navbar-inner'>
+        <div class='container'>
+          <a class='brand' href='/mail'><%- config.site_logo || config.name %></a>
+          <form id='search_form' class='navbar-search' action="/" style="display: none;">
+            <input type='text' id='q' name='q' class='search-query span3' value='<%= locals.keyword || "" %>'/>
+          </form>
+
+          <a class="fork2github" href="https://github.com/nomospace/nodemail">
+            <img src="/images/octocat-icon.png" alt="Fork me on GitHub">
+          </a>
+        </div>
+      </div>
+    </div> -->
+    <!-- wrapper -->  
+    <div id='wrapper'>
+      <div id='main' class=" grid-100">
+        <%- body %>
+      </div>
+      <div class='cl cr'></div>
+    </div>
+    
+  </body>
+</html> 

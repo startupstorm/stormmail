@@ -1,0 +1,44 @@
+<div id='content' style="background-color:#3FCCEA;" class="grid-50 push-25">
+	<div class='panel' style="background-color:#3FCCEA;">
+		<div class='header' style="background-color:#3FCCEA;">
+			<ul class='breadcrumb' style="background-color:#3FCCEA;">
+
+				<li class='active text-center'><h1 style="font-size:35px;font-family: Oxygen, sans-serif;color:white;">Login</h1></li>
+						<hr>
+
+			</ul>
+		</div>
+		<div class='inner grid-50 push-25'>
+      <% var error = error||'' %>
+			<% if(error){ %>
+			<div class="alert alert-error">	
+				<a class="close" data-dismiss="alert" href="#">&times;</a>
+				<strong><%= error %></strong>
+			</div>
+			<% } %>
+			<form id='signin_form' class='form-horizontal grid-95' action='/login' method='post'>
+				<div class='text-center grid-90' style="font-size:25px; color:white;padding:0% 0 5%;">
+					<label><a class=" text-center" href="/join">Create an Account</a></label>
+				</div>
+				<div class='input-group-lg input-group ' style="">
+					<!-- <label class='control-label' for='name' style="color:#F9F9F9;font-size:20px;">Email</label> -->
+					<input class='form-control' id='name' name='name' size='30' type='text' placeholder="email"/>
+				</div>
+				<div class='input-group-lg input-group' style="padding:5% 0 5%;">
+					<!-- <label class='control-label' for='pass' style="color:#F9F9F9;font-size:20px;">Password</label> -->
+					<input class='form-control' id='pass' name='pass' size='30' type='password' placeholder="password"/>
+				</div>
+
+				<input type='hidden' name='_csrf' value='<%= csrf %>' />
+				<div class='form-actions' style="padding:20% 0 5%;">
+					<input type='submit' class='btn btn-lg btn-success grid-90' value='Login' />
+				</div>
+				<div class='text-center grid-90' style="padding:3% 0 10% 0; color:gray;">
+					<a href="/sign/reset">Reset your password</a>
+				</div>
+			</form>
+		</div>
+	</div>	
+</div>
+<script src="/libs/jquery.validate/jquery.validate.js"></script>
+<script src="/javascripts/login.js"></script>
