@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var UserSchema = new Schema({
+var userSchema = new Schema({
   username: {type: String},
   createAt: {type: Date, default: Date.now},
   is_admin: {type: Boolean},
@@ -55,4 +55,4 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
   });
 };
 
-mongoose.model('User', UserSchema);
+mongoose.model('User', userSchema);

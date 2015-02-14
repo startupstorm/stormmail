@@ -10,7 +10,7 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
 var User = require('../models/User');
-var secrets = require('../config/secrets');
+// var secrets = require('../config/secrets');
 
 
 /**
@@ -120,16 +120,16 @@ exports.getSignup = function(req, res) {
   });
 };
 
-var cpanel = require('cpanel-lib');
+// var cpanel = require('cpanel-lib');
 
-var options = {
-    host: 'whm.example.com',
-    port: 2087,
-    secure: true,
-    username: 'WHM_USERNAME',
-    accessKey: 'YOUR_ACCESS_KEY',
-    ignoreCertError: true
-};
+// var options = {
+//     host: 'whm.example.com',
+//     port: 2087,
+//     secure: true,
+//     username: 'WHM_USERNAME',
+//     accessKey: 'YOUR_ACCESS_KEY',
+//     ignoreCertError: true
+// };
 
 /**
  * POST /signup
@@ -163,6 +163,7 @@ exports.postSignup = function(req, res, next) {
       lastname: lastname,
       email_alt: email,
       phone: phone
+    }
   });
 
   User.findOne({ email: req.body.email }, function(err, existingUser) {
@@ -192,11 +193,11 @@ exports.join = function(req, res){
     username: username,
     firstname: firstname,
     lastname: lastname,
-    email: email
+    email: email,
     phone: phone
 
   }
-}
+
 
   var errors = req.validationErrors();
 
