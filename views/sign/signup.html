@@ -1,0 +1,136 @@
+<div id='content' style="background-color:#3FCCEA;" class="grid-50 tablet-grid-60 tablet-push-20 mobile-push-10 mobile-grid-80 push-25">
+	<div class='panel' style="background-color:#3FCCEA;">
+		<div class='header' style="background-color:#3FCCEA;">
+			<ul class='breadcrumb' style="background-color:#3FCCEA;">
+
+				<li class='active text-center'><h1 style="font-size:40px;font-family: Oxygen, sans-serif;color:white;padding-top:10px;">Create Your Account</h1></li>
+
+			</ul>
+		</div>
+		<div class='inner' style='padding-top:5%;'>
+
+			<form id='signin_form' class='form-horizontal grid-80 push-10 tablet-grid-70 tablet-push-15 mobile-grid-60 mobile-push-20' action='/signup' method='post'>
+
+				<% if(messages.errors){ %>
+					<fieldset class="error-border">
+						<legend class="scheduler-border">
+							Form Errors:
+						</legend>
+						<div class="alert alert-error">	
+							<a class="close" data-dismiss="alert" href="#">&times;</a>
+							<% for(var i=0; i< messages.errors.length; i++){ %>
+								<strong><%= messages.errors[i].msg %></strong>
+								<br>
+							<% } %>
+						</div>
+					</fieldset>
+				<% } %>
+					
+				<fieldset class="scheduler-border personal">
+			    <legend class="scheduler-border">Personal</legend>
+					<!-- Text input-->
+					<div class="form-group form-group-lg">
+					  <label class="text-left grid-100" for="firstname">First Name (required)</label>  
+					  <div class="grid-90">
+						  <input id="firstname" name="firstname" type="text" placeholder="placeholder" class="form-control input-md" required="">
+						  <span class="-block"></span>  
+					  </div>
+					</div>
+
+					<!-- Text input-->
+					<div class="form-group form-group-lg">
+					  <label class="text-left grid-100" for="lastname">Last Name (required)</label>
+
+					  <div class="grid-90">
+						  <input id="lastname" name="lastname" type="text" placeholder="placeholder" class="form-control input-md" required="">
+						  <span class="-block"></span>  
+					  </div>
+					</div>
+				</fieldset>
+
+				<fieldset class="scheduler-border account">
+				  <legend class="scheduler-border">Account</legend>
+					<!-- Appended Input-->
+					<div class="form-group form-group-lg">
+					  <label class="text-left grid-100 " for="username">Username (required)</label>
+					  <div class="grid-90">
+					    <div class="input-group">
+					      <input id="username" name="username" minlength="2" class="form-control" placeholder="example" type="text" required>
+					      <span class="input-group-addon">@startupstorm.club</span>
+					    </div>
+					    <p class="-block"></p>
+					  </div>
+					</div>
+					 Password input
+					<div class="form-group form-group-lg">
+					  <label class="text-left grid-100 " for="pass">Create a Password (required)</label>
+					  <div class="grid-90">
+					    <input id="pass" name="pass" type="password" placeholder="placeholder" class="form-control input-md" required minlength="4">
+					    <span class="-block"></span>
+					  </div>
+					</div>
+
+					<!-- Password input-->
+					<div class="form-group form-group-lg">
+					  <label class="text-left grid-100 " for="pass_confirm">Confirm Password</label>
+					  <div class="grid-90">
+					    <input id="pass_confirm" name="pass_confirm" type="password" placeholder="placeholder" class="form-control input-md" required minlength="4">
+					    <span class="-block"></span>
+					  </div>
+					</div>
+				</fieldset>
+
+				<fieldset class="scheduler-border contact">
+				  <legend class="scheduler-border">Contact</legend>
+					<!-- Text input-->
+					<div class="form-group form-group-lg">
+					  <label class="text-left grid-100 " for="curr_email">Current Email (required)</label>  
+					  <div class="grid-90">
+					  <input id="curr_email" name="curr_email" type="email" placeholder="placeholder" class="form-control input-md" required>
+					  <small class="-block">this will be used for recovery only</small>  
+					  </div>
+					</div>
+
+					<!-- Text input-->
+					<div class="form-group form-group-lg">
+					  <label class="text-left grid-100 " for="phone">Mobile Phone
+					  </label>  
+
+					  <div class="grid-90">
+						  <input id="phone" name="phone" type="text" placeholder="placeholder" class="form-control input-md">
+						  <span class="-block"></span>  
+					  </div>
+					</div>
+				</fieldset>
+
+				<fieldset>
+					<!-- Single Checkbox -->
+					<div class="form-group form-group-lg">
+					  <label class="text-left grid-100">
+					  	I agree to <a href="/tos">StartupStorm's TOS </a>(required)
+					  </label>
+					  <div class="text-left grid-100">
+					  	<div class="checkbox">
+						    <label for="tos-0">
+						      <input type="checkbox" name="tos" id="tos-0" value="yes" required>
+						      Yes
+						    </label>
+						</div>
+					  </div>
+					</div>
+					<input type='hidden' name='_csrf' value='<%= csrf %>' />
+		
+					<!-- Submit Button -->
+					<div class="form-group form-group-lg">
+					  <div class="text-left grid-100">
+					    <button id="nextstep" name="nextstep" class="btn btn-success">Next Step</button>
+					  </div>
+					</div>
+				</fieldset>
+			</form>
+
+		</div>
+	</div>	
+</div>
+<script src="/libs/jquery.validate/jquery.validate.js"></script>
+<script src="/javascripts/login.js"></script>

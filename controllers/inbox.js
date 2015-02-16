@@ -12,7 +12,7 @@ var imap, mailObject = {};
 var inboxPage;
 
 emitter.setMaxListeners(1000);
-moment.lang('zh-cn');
+moment.lang('en');
 
 emitter.on('messages', function(res) {
   mailObject.msgs = mailObject.msgs.reverse();

@@ -1,13 +1,24 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var ObjectId = Schema.ObjectId;
+module.exports = function(sequelize, DataTypes) {
+  var Mail = sequelize.define("User", {
+    id: { type: DataTypes.STRING, unique: true },
+    username: { type: DataTypes.STRING, unique: true },
+    page: DataTypes.INTEGER,
 
-var MailSchema = new Schema({
-  id: {type: String},
-  username: {type: String},
-  page: {type: Number},
-  data: {type: Object},
-  createAt: {type: Date, default: Date.now}
-});
+    //Serialized JSON data from email object
+    data: DataTypes.TEXT,
+    _data: DataTypes.TEXT,
 
-mongoose.model('Mail', MailSchema);
+  }, {
+    getterMethods: {
+        data: function(){
+            return JSON.parse(this._data);
+        }
+    },
+    setterMethods: {
+        data: function(v){
+            this._data = JSON.stringify(v);
+        }
+    }
+  });
+  return Mail;
+}

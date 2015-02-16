@@ -1,7 +1,7 @@
 var sanitize = require('validator').sanitize;
 var crypto = require('crypto');
 var toobusy = require('toobusy');
-var config = require('../config').config;
+var config = require('../app_config').config;
 var mailUtil = require('../libs/mail-util');
 
 var _ = require('lodash');
@@ -9,7 +9,7 @@ var async = require('async');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
-var User = require('../models/User');
+var User = require('../models').User;
 // var secrets = require('../config/secrets');
 
 
@@ -35,9 +35,13 @@ exports.signin = function(req, res) {
   };
   // store session cookie
   genSession(user, res);
-
-
 };
+
+exports.getLogin = function(req, res) {
+  // req.session._loginReferer = req.headers.referer;
+  res.render('sign/login.html');
+};
+
 /**
  * POST /login
  * Sign in using email and password.
@@ -57,20 +61,23 @@ exports.postLogin = function(req, res, next) {
     if (err) return next(err);
     if (!user) {
       req.flash('errors', { msg: info.message });
+      console.log(info.message);
       return res.redirect('/login');
     }
     req.logIn(user, function(err) {
       if (err) return next(err);
-      req.flash('success', { msg: 'Success! You are logged in.' });
 
       mailUtil.doConnect({user: user, recreate: true}, function(err) {
         if (err) {
-          res.render('sign/login.html', {error: err.message || 'Could not connect to mail client'});
+          req.flash('errors', { msg: info.message });
+          return res.redirect('/login');
+          // res.render('sign/login.html', {error: err.message || 'Could not connect to mail client'});
         }
         else {
           console.log('signin');
           USER = req.session.user = user;
-          res.locals({'currentUser': req.session.user});
+          res.locals({'currentUser': user});
+          req.flash('success', { msg: 'Success! You are logged in.' });
           res.redirect('/mail');
         }
       });
@@ -120,111 +127,93 @@ exports.getSignup = function(req, res) {
   });
 };
 
-// var cpanel = require('cpanel-lib');
-
-// var options = {
-//     host: 'whm.example.com',
-//     port: 2087,
-//     secure: true,
-//     username: 'WHM_USERNAME',
-//     accessKey: 'YOUR_ACCESS_KEY',
-//     ignoreCertError: true
-// };
+exports.showJoin = function(req, res) {
+  // req.session._loginReferer = req.headers.referer;
+  res.render('sign/signup.html');
+};
 
 /**
  * POST /signup
  * Create a new local account.
  */
 exports.postSignup = function(req, res, next) {
-  req.assert('email', 'Email is not valid').isEmail();
-  req.assert('password', 'Password must be at least 4 characters long').len(4);
+  req.assert('curr_email', 'Your \'Current Email\' is not valid').isEmail();
+  req.assert('password', 'Passwords must be at least 4 characters long').len(4);
   req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
-  req.checkBody('username','Username cannot be blank').notEmpty()
-  req.checkBody('firstname','Firstname cannot be blank').notEmpty().isAlpha()
-  req.checkBody('lastname','Lastname cannot be blank').notEmpty().isAlpha()
-   var errors = req.validationErrors();
-
-  if (errors) {
-    req.flash('errors', errors);
-    return res.redirect('/join');
-  }
-  var username = sanitize(req.body.username).trim().toLowerCase();
-  var pass = sanitize(req.body.pass).trim();
-  var email = sanitize(req.body.email).trim();
-  var phone  = sanitize(req.body.phone).trim();
-  var firstname  = sanitize(req.body.firstname).trim()
-  var lastname =  sanitize(req.body.lastname).trim();
-
-  var user = new User({
-    username: username,
-    password: req.body.password,
-    profile: {
-      firstname: firstname,
-      lastname: lastname,
-      email_alt: email,
-      phone: phone
-    }
-  });
-
-  User.findOne({ email: req.body.email }, function(err, existingUser) {
-    if (existingUser) {
-      req.flash('errors', { msg: 'Account with that email address already exists.' });
-      return res.redirect('/signup');
-    }
-    user.save(function(err) {
-      if (err) return next(err);
-      req.logIn(user, function(err) {
-        if (err) return next(err);
-        res.redirect('/');
-      });
-    });
-  });
-}
-
-exports.join = function(req, res){
-  var username = sanitize(req.body.username).trim().toLowerCase();
-  var pass = sanitize(req.body.pass).trim();
-  var email = sanitize(req.body.email).trim();
-  var phone  = sanitize(req.body.phone).trim();
-  var firstname  = sanitize(req.body.firstname).trim()
-  var lastname =  sanitize(req.body.lastname).trim();
-
-  var user = {
-    username: username,
-    firstname: firstname,
-    lastname: lastname,
-    email: email,
-    phone: phone
-
-  }
-
-
+  req.checkBody('username','Username can only be alphanumric').notEmpty().isAlphanumeric();
+  req.checkBody('firstname','Firstname cannot be blank').notEmpty();
+  req.checkBody('firstname', 'Firstname must contain letters only').isAlpha();
+  req.checkBody('lastname','Lastname cannot be blank').notEmpty();
+  req.checkBody('firstname', 'Lastname must contain letters only').isAlpha();
+  req.checkBody('tos','TOS must be agreed to').equals("yes")
   var errors = req.validationErrors();
 
   if (errors) {
     req.flash('errors', errors);
     return res.redirect('/signup');
   }
+  var username = sanitize(req.body.username).trim().toLowerCase();
+  var pass = sanitize(req.body.pass).trim();
+  var email = sanitize(req.body.email).trim();
+  var phone  = sanitize(req.body.phone).trim();
+  var firstname  = sanitize(req.body.firstname).trim()
+  var lastname =  sanitize(req.body.lastname).trim();
 
-  var user = new User({
-    email: req.body.email,
-    password: req.body.password
-  });
+  // var user = new User({
+  //   username: username,
+  //   password: req.body.password,
+  //   profile: {
+  //     firstname: firstname,
+  //     lastname: lastname,
+  //     email_alt: email,
+  //     phone: phone
+  //   }
+  // });
 
-  User.findOne({ email: req.body.email }, function(err, existingUser) {
+  var user = User.create({
+    username: username,
+    password: req.body.password,
+    firstname: firstname,
+    lastname: lastname,
+    email_alt: email,
+    phone: phone
+  }).complete(function(err){
+    next(err);
+  })
+
+  User.find({ 
+    where: { email: req.body.email } 
+  }).complete( function(err, existingUser) {
+
     if (existingUser) {
       req.flash('errors', { msg: 'Account with that email address already exists.' });
       return res.redirect('/signup');
     }
-    user.save(function(err) {
+    user.save().complete(function(err) {
       if (err) return next(err);
       req.logIn(user, function(err) {
         if (err) return next(err);
         res.redirect('/');
       });
     });
+
   });
-};
+
+  // User.findOne({ email: req.body.email }, function(err, existingUser) {
+  //   if (existingUser) {
+  //     req.flash('errors', { msg: 'Account with that email address already exists.' });
+  //     return res.redirect('/signup');
+  //   }
+  //   user.save(function(err) {
+  //     if (err) return next(err);
+  //     req.logIn(user, function(err) {
+  //       if (err) return next(err);
+  //       res.redirect('/');
+  //     });
+  //   });
+  // });
+}
+
 
 /**
  * GET /account
@@ -412,7 +401,7 @@ exports.getForgot = function(req, res) {
   if (req.isAuthenticated()) {
     return res.redirect('/');
   }
-  res.render('account/forgot', {
+  res.render('sing/forgot', {
     title: 'Forgot Password'
   });
 };
@@ -480,18 +469,6 @@ exports.postForgot = function(req, res, next) {
     res.redirect('/forgot');
   });
 };
-
-exports.showSignin = function(req, res) {
-  // req.session._loginReferer = req.headers.referer;
-  res.render('sign/login.html');
-};
-exports.showJoin = function(req, res) {
-  // req.session._loginReferer = req.headers.referer;
-  res.render('sign/join.html');
-};
-
-
-
 
 
 exports.authUser = function(req, res, next) {

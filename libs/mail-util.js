@@ -2,6 +2,7 @@ var ImapConnection = require('imap').ImapConnection;
 //var util = require('util');
 var nodeMailer = require('nodemailer');
 var models = require('../models');
+var config = require('../app_config').config;
 var Mail = models.Mail;
 //var Temp = models.Temp;
 
@@ -22,15 +23,14 @@ exports.setHandlers = function(handlers) {
 
 exports.getConnection = function(user, recreate) {
   if (recreate || !this.conn) {
-    // TODO 匹配过于简单暴力
-    var mail = user.name && user.name.split('@')[1].split('.')[0];
+    // var mail = user.name && user.name.split('@')[1].split('.')[0];
     this.conn = new ImapConnection({
-      username: user.name,
+      username: user.email,
       password: user.pass,
-      host: 'cloudsdale.poniverse.net',
-      port: 993,
-//      debug: console.error,
-      secure: true
+      host: config.emailHost,
+      port: config.imapPort,
+      debug: console.error,
+      secure: config.useTLS
     });
   }
   return this.conn;
@@ -56,11 +56,10 @@ exports.createTransport = function(req) {
     pass = user.pass;
 
   return nodeMailer.createTransport('SMTP', {
-    // service: "Gmail",
-    host: 'cloudsdale.poniverse.net',
     // hostname
-    port: 465,
+    host: config.mailHost,
     // port for secure SMTP
+    port: config.smtpPort,
     auth: {
       user: name,
       pass: pass
@@ -69,21 +68,30 @@ exports.createTransport = function(req) {
 };
 
 exports.getMailById = function(id, cb) {
-  Mail.findOne({id: id, username: USER.name}, function(err, mail) {
+  Mail.find({ where: {id: id, username: USER.name} }).catch(function(err, mail){
     if (err) throw err;
     cb(mail);
   });
+  // Mail.findOne({id: id, username: USER.name}, function(err, mail) {
+  //   if (err) throw err;
+  //   cb(mail);
+  // });
 };
 
 exports.saveMail = function(options) {
-  var mail = new Mail();
+  // var mail = new Mail();
+  var mail = Mail.create({})
   mail.id = options.id;
   mail.page = options.page;
   mail.data = options.data;
   mail.username = USER.name;
-  mail.save(function(err) {
-    if (err) throw err;
-  });
+
+  mail.save().catch(function(err) {
+    if(err) throw err;
+  })
+  // mail.save(function(err) {
+  //   if (err) throw err;
+  // });
 };
 
 //exports.saveImap = function(imap) {
@@ -104,8 +112,7 @@ exports.saveMail = function(options) {
 exports.getMailListByPage = function(page, cb) {
   Mail.find({page: page, username: USER.name}, 'data',
     function(err, list) {
-      // TODO list 数据对象不仅仅包含纯 data 字段
-      // 数据按时间对象排序
+      // TODO list mail data 
       if (err) throw err;
       cb(list);
     });

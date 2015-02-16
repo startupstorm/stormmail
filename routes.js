@@ -14,11 +14,12 @@ module.exports = function(app) {
   // url routes
   app.get('/', site.index);
 
-  app.get('/login', sign.showSignin);
-  app.get('/join', sign.showJoin);
-  app.get('/signout', sign.logout);
+  app.get('/login', sign.getLogin);
   app.post('/login', sign.postLogin);
-  // app.get('/join', sign.join);
+  app.get('/signup', sign.showJoin);
+  app.post('/signup', sign.postSignup);
+  app.get('/signout', sign.logout);
+
 
   app.get('/mail', mail.index);
   app.get('/mail/inbox', inbox.index);

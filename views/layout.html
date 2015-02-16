@@ -35,14 +35,15 @@
     <header class="">
 
         <div class="grid-container">
-<!--           <a href="#" id="logo" style="left:30px;position:absolute;"><img src='http://ntshstartupstorm.org/img/header_logo.png'></a> -->
+          <a href="#" id="logo">
+            <img src='//startupstorm.org/img/header_logo.png' alt="StartupStorm">
+          </a>
           <nav class="pull-left" style="padding-left:5%;">
               <a href="#about">About</a>
               <a href="#ventures">Ventures</a>
-
           </nav>
           <nav class="pull-right">
-                          <%
+              <%
               var site_navs = config.site_navs || [];
               for (var i = 0, l = site_navs.length; i < l; i++) {
                 var nav = site_navs[i];
@@ -57,6 +58,7 @@
               <a><%=locals.currentUser.name%></a>
               <a href='/signout'>Logout</a>
               <% } else { %>
+              <a href="/signup">Signup</a>
               <a href='/login'>Login</a>
               <% } %>
           </nav>
